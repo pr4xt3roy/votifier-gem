@@ -23,6 +23,12 @@ For the server:
     require 'votifier'
     Votifier::Server.new(:private_key => private_key_file).listen
 
+## TODO
+
+* Unit Tests
+* Support .pem, .key keys or string keys.
+* The username, ip and timestamp should be passed to Votifier::Client#send instead of the contructor
+
 ## Contributing
 
 1. Fork it
