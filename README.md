@@ -35,6 +35,9 @@ For the server:
 * Adding Observer so custom class can perform tasks when a vote is received.
 * Adding RDocs or Yard documentation
 * Add interface to bind to and port as part of Vortifier::Server constructor
+* Add new class MinecraftServer (hostname, port, key)
+* Add new class MinecraftPlayer (username, ip_address)
+* Server should use start instead of listen
 
 ## Contributing
 
