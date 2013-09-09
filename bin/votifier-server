@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/votifier'
+
+private_key_file = File.expand_path('../../config/sample-private.key', __FILE__)
+Votifier::Server.new(:private_key => private_key_file).listen
