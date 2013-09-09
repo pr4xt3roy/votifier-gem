@@ -1,6 +1,6 @@
 require 'forwardable'
 require 'openssl'
-module Votifer
+module Votifier
   class Key
 
     def initialize(pem_key_content)

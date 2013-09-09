@@ -10,7 +10,7 @@ module Votifier
     end
 
     def init_private_key(private_key_file)
-      @private_key = Votifer::Key.from_key_file(private_key_file)
+      @private_key = Votifier::Key.from_key_file(private_key_file)
     end
 
     def listen

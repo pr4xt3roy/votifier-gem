@@ -17,7 +17,7 @@ module Votifier
     end
 
     def init_public_key(public_key_file)
-      @public_key = Votifer::Key.from_public_key_file(public_key_file)
+      @public_key = Votifier::Key.from_key_file(public_key_file, :public)
     end
 
     def detect_ip_address
