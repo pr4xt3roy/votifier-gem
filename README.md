@@ -1,6 +1,6 @@
-# Votifier
+# Votifier Gem
 
-Votifier Server and Client for Minecraft
+Ruby Gem for a Votifier Server and Client for Minecraft
 
 ## Installation
 
