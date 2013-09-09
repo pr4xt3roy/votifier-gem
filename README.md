@@ -11,12 +11,17 @@ For a manual installation, type this on your console:
 ## Usage
 
     require 'votifier'
-    Votifier::Client.new("MyMinecraftServerList.info", :username => "Notch").send
+    Votifier::Client.new(public_key_file, "MyMinecraftServerList.info", :username => "Notch").send
 
 If you have the player's IP addess and the timestamp, you can pass them
 
     require 'votifier'
-    Votifier::Client.new("MyMinecraftServerList.info", :username => "Notch", :ip_address => @ip_address, :timestamp => @timestamp).send
+    Votifier::Client.new(public_key_file, "MyMinecraftServerList.info", :username => "Notch", :ip_address => @ip_address, :timestamp => @timestamp).send
+
+For the server:
+
+    require 'votifier'
+    Votifier::Server.new(:private_key => private_key_file).listen
 
 ## Contributing
 
