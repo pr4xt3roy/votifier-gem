@@ -4,15 +4,12 @@ module Votifier
   class Client
 
     attr_reader :socket_object
-    attr_reader :public_key, :service_name, :hostname, :port
-    attr_accessor :username, :ip_address, :timestamp
+    attr_reader :public_key, :service_name
+    attr_accessor :hostname, :port
 
     def initialize(public_key_file, service_name, opts = {})
       init_public_key(public_key_file)
       @service_name = service_name
-      @username = opts.fetch(:username, nil)
-      @ip_address = opts.fetch(:ip_address, detect_ip_address)
-      @timestamp = opts.fetch(:timestamp, Time.now.to_i)
       @hostname = opts.fetch(:hostname, 'localhost')
       @port = opts.fetch(:port, 8192)
       @socket_object = opts.fetch(:socket_object, TCPSocket)
@@ -44,15 +41,15 @@ module Votifier
       @ips ||= Socket.ip_address_list
     end
 
-    def send
-      validate!
-      votifier_string = to_a.join("\n")
+    def send opts = {}
+      validate!(opts)
+      votifier_string = to_unencrypted_packet_array(opts).join("\n")
       encrypted = encrypt(votifier_string)
       send_to_server(encrypted)
     end
 
-    def validate!
-      raise 'Usename must be present' unless !username.nil?
+    def validate!(opts)
+      raise 'Usename must be between 2 and 16 characters' unless !opts.key?(:username) || (opts[:username].size >= 2 && opts[:username].size <= 16)
     end
 
     def encrypt(votifier_string)
@@ -71,13 +68,13 @@ module Votifier
       socket_object.open(hostname, port)
     end
 
-    def to_a
+    def to_unencrypted_packet_array(opts)
       [
-       "VOTE",
-       service_name,
-       username,
-       ip_address,
-       timestamp
+        "VOTE",
+        service_name,
+        opts.fetch(:username, ""),
+        opts.fetch(:ip_address, detect_ip_address),
+        opts.fetch(:timestamp, Time.now.to_i)
       ]
     end
 

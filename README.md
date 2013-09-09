@@ -13,12 +13,16 @@ For a manual installation, type this on your console:
 ## Usage
 
     require 'votifier'
-    Votifier::Client.new(public_key_file, "MyMinecraftServerList.info", :username => "Notch").send
+    votifier = Votifier::Client.new(public_key_file, "MyMinecraftServerList.info", :hostname => "some.minecraft-server.com")
+    votifier.send(:username => "Notch")
 
 If you have the player's IP addess and the timestamp, you can pass them
 
     require 'votifier'
-    Votifier::Client.new(public_key_file, "MyMinecraftServerList.info", :username => "Notch", :ip_address => @ip_address, :timestamp => @timestamp).send
+    votifier = Votifier::Client.new(public_key_file, "MyMinecraftServerList.info")
+    votifier.hostname = "some.minecraft-server.com"
+    votifier.port = 9999   # if the server uses a non-standard port 8192
+    votifier.send(:username => "Notch", :ip_address => @ip_address, :timestamp => @timestamp)
 
 For the server:
 
@@ -28,7 +32,6 @@ For the server:
 ## TODO
 
 * Unit Tests
-* The username, ip and timestamp should be passed to Votifier::Client#send instead of the contructor
 * Adding Observer so custom class can perform tasks when a vote is received.
 * Adding RDocs or Yard documentation
 * Add interface to bind to and port as part of Vortifier::Server constructor
