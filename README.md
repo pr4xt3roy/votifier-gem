@@ -1,6 +1,8 @@
-# Votifier Gem
+# Votifier Gem (Alpha Version)
 
 Ruby Gem for a Votifier Server and Client for Minecraft
+
+This version is missing a lot of feature.
 
 ## Installation
 
