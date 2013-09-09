@@ -3,6 +3,7 @@ require 'socket'      # Sockets are in standard library
 module Votifier
   class Client
 
+    attr_reader :socket_object
     attr_reader :public_key, :service_name, :hostname, :port
     attr_accessor :username, :ip_address, :timestamp
 
@@ -14,6 +15,7 @@ module Votifier
       @timestamp = opts.fetch(:timestamp, Time.now.to_i)
       @hostname = opts.fetch(:hostname, 'localhost')
       @port = opts.fetch(:port, 8192)
+      @socket_object = opts.fetch(:socket_object, TCPSocket)
     end
 
     def init_public_key(public_key_file)
@@ -60,9 +62,13 @@ module Votifier
     end
 
     def send_to_server(encrypted)
-      s = TCPSocket.open(hostname, port)
+      s = open_server
       s.print encrypted
       s.close
+    end
+
+    def open_server
+      socket_object.open(hostname, port)
     end
 
     def to_a
