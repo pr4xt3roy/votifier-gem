@@ -28,11 +28,9 @@ For the server:
 ## TODO
 
 * Unit Tests
-* Support .pem, .key keys or string keys.
 * The username, ip and timestamp should be passed to Votifier::Client#send instead of the contructor
 * Adding Observer so custom class can perform tasks when a vote is received.
 * Adding RDocs or Yard documentation
-* Add hostname/port as part of the Votifier::Client constructor
 * Add interface to bind to and port as part of Vortifier::Server constructor
 
 ## Contributing
