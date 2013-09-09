@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/votifier'
+require File.expand_path('../../lib/votifier', __FILE__)
 
 public_key_file = File.expand_path('../../config/sample-public.key', __FILE__)
 Votifier::Client.new(public_key_file, "Testing", :username => "linkoer").send

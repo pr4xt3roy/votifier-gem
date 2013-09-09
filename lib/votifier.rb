@@ -1,4 +1,4 @@
-require_relative 'votifier/vote'
-require_relative 'votifier/server'
-require_relative 'votifier/client'
-require_relative 'votifier/key'
+require File.expand_path('../votifier/vote', __FILE__)
+require File.expand_path('../votifier/server', __FILE__)
+require File.expand_path('../votifier/client', __FILE__)
+require File.expand_path('../votifier/key', __FILE__)
