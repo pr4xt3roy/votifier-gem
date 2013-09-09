@@ -28,6 +28,8 @@ For the server:
 * Unit Tests
 * Support .pem, .key keys or string keys.
 * The username, ip and timestamp should be passed to Votifier::Client#send instead of the contructor
+* Adding Observer so custom class can perform tasks when a vote is received.
+* Adding RDocs or Yard documentation
 
 ## Contributing
 
