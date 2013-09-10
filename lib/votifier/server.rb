@@ -2,19 +2,15 @@ require 'socket'               # Get sockets from stdlib
 module Votifier
   class Server
 
-    attr_reader :private_key
+    attr_reader :minecraft_server
 
-    def initialize(opts)
-      raise ':private_key options is required' unless opts.key?(:private_key)
-      init_private_key(opts[:private_key])
-    end
-
-    def init_private_key(private_key_file)
-      @private_key = Votifier::Key.from_key_file(private_key_file)
+    def initialize(minecraft_server)
+      @minecraft_server = minecraft_server
     end
 
     def listen
-      server = TCPServer.open(8193)  # Socket to listen on port
+      # Socket to listen on interface/port
+      server = TCPServer.open(minecraft_server.hostname, minecraft_server.port)
       loop {                         # Servers run forever
         Thread.start(server.accept) do |client| # Wait for a client to connect
           handle_connection(client)
@@ -49,7 +45,7 @@ module Votifier
     end
 
     def decrypt(encrypted_string)
-      string = private_key.private_decrypt(encrypted_string)
+      string = minecraft_server.private_decrypt(encrypted_string)
       string
     end
 

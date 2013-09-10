@@ -13,29 +13,40 @@ For a manual installation, type this on your console:
 ## Usage
 
     require 'votifier'
-    votifier = Votifier::Client.new(public_key_file, "MyMinecraftServerList.info", :hostname => "some.minecraft-server.com")
+    server = Votifier::MinecraftServer.new(public_key_file, "some.minecraft-server.com")
+    votifier = Votifier::Client.new("MyMinecraftServerList.info", server)
     votifier.send(:username => "Notch")
 
 If you have the player's IP addess and the timestamp, you can pass them
 
     require 'votifier'
-    votifier = Votifier::Client.new(public_key_file, "MyMinecraftServerList.info")
-    votifier.hostname = "some.minecraft-server.com"
-    votifier.port = 9999   # if the server uses a non-standard port 8192
+    server = Votifier::MinecraftServer.new(public_key_file, "some.minecraft-server.com:9999")
+    votifier = Votifier::Client.new("MyMinecraftServerList.info", server)
     votifier.send(:username => "Notch", :ip_address => @ip_address, :timestamp => @timestamp)
+
+The MinecraftServer can receive the hostname/port in different ways:
+
+    Votifier::MinecraftServer.new(public_key_file) => defaults to "localhost:8192"
+    Votifier::MinecraftServer.new(public_key_file, "some.minecraft-server.com") => port 8192
+    Votifier::MinecraftServer.new(public_key_file, 9999)  => defaults to "localhost"
+    Votifier::MinecraftServer.new(public_key_file, "some.minecraft-server.com:9999")
+    Votifier::MinecraftServer.new(public_key_file, "some.minecraft-server.com", 9999)
+    Votifier::MinecraftServer.new(public_key_file, 999, "some.minecraft-server.com")
+    server = Votifier::MinecraftServer.new(public_key_file)
+    server.host = "some.minecraft-server.com:9999"
 
 For the server:
 
     require 'votifier'
-    Votifier::Server.new(:private_key => private_key_file).listen
+    server = Votifier::MinecraftServer.new(private_key_file, '0.0.0.0:8193')
+    Votifier::Server.new(server).listen
 
 ## TODO
 
 * Unit Tests
 * Adding Observer so custom class can perform tasks when a vote is received.
 * Adding RDocs or Yard documentation
-* Add interface to bind to and port as part of Vortifier::Server constructor
-* Add new class MinecraftServer (hostname, port, key)
+* Change the Server's constructor to accept hostname and port directly
 * Add new class MinecraftPlayer (username, ip_address)
 * Server should use start instead of listen
 

@@ -3,20 +3,13 @@ require 'socket'      # Sockets are in standard library
 module Votifier
   class Client
 
-    attr_reader :socket_object
-    attr_reader :public_key, :service_name
-    attr_accessor :hostname, :port
+    attr_reader :socket_object, :service_name
+    attr_accessor :minecraft_server
 
-    def initialize(public_key_file, service_name, opts = {})
-      init_public_key(public_key_file)
+    def initialize(service_name, minecraft_server, opts = {})
       @service_name = service_name
-      @hostname = opts.fetch(:hostname, 'localhost')
-      @port = opts.fetch(:port, 8192)
+      @minecraft_server = minecraft_server
       @socket_object = opts.fetch(:socket_object, TCPSocket)
-    end
-
-    def init_public_key(public_key_file)
-      @public_key = Votifier::Key.from_key_file(public_key_file, :public)
     end
 
     def detect_ip_address
@@ -44,18 +37,12 @@ module Votifier
     def send opts = {}
       validate!(opts)
       votifier_string = to_unencrypted_packet_array(opts).join("\n")
-      encrypted = encrypt(votifier_string)
+      encrypted = minecraft_server.encrypt(votifier_string)
       send_to_server(encrypted)
     end
 
     def validate!(opts)
       raise 'Usename must be between 2 and 16 characters' unless !opts.key?(:username) || (opts[:username].size >= 2 && opts[:username].size <= 16)
-    end
-
-    def encrypt(votifier_string)
-      encrypted = public_key.public_encrypt(votifier_string)
-      raise "Error encrypting, invalid size: #{encrypted.bytesize}" unless encrypted.bytesize == 256
-      encrypted
     end
 
     def send_to_server(encrypted)
@@ -65,7 +52,7 @@ module Votifier
     end
 
     def open_server
-      socket_object.open(hostname, port)
+      socket_object.open(minecraft_server.hostname, minecraft_server.port)
     end
 
     def to_unencrypted_packet_array(opts)

@@ -3,4 +3,5 @@
 require File.expand_path('../../lib/votifier', __FILE__)
 
 private_key_file = File.expand_path('../../config/sample-private.key', __FILE__)
-Votifier::Server.new(:private_key => private_key_file).listen
+server = Votifier::MinecraftServer.new(private_key_file, '0.0.0.0:8193')
+Votifier::Server.new(server).listen
