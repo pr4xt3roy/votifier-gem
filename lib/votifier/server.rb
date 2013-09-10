@@ -3,19 +3,36 @@ module Votifier
   class Server
 
     attr_reader :minecraft_server
+    attr_writer :tcp_server_class, :thread_class
 
-    def initialize(minecraft_server)
-      @minecraft_server = minecraft_server
+    def initialize(*args)
+      if args.size == 1 && args[0].respond_to?(:hostname) && args[0].respond_to?(:port) && args[0].respond_to?(:private_decrypt)
+        @minecraft_server = args[0]
+      elsif args.size == 1 && (args[0].respond_to?(:to_s) || args[0].respond_to?(:private_decrypt))
+        @minecraft_server = Votifier::MinecraftServer.new(args[0])
+      elsif args.size == 2
+        @minecraft_server = Votifier::MinecraftServer.new(args[0], args[1])
+      elsif args.size == 3
+        @minecraft_server = Votifier::MinecraftServer.new(args[0], args[1], args[2])
+      else
+        raise "Invalid parameters : #{args.inspect}"
+      end
+      @tcp_server_class = TCPServer
+      @thread_class = Thread
     end
 
     def listen
-      # Socket to listen on interface/port
-      server = TCPServer.open(minecraft_server.hostname, minecraft_server.port)
+      server = open_tcp_server
       loop {                         # Servers run forever
-        Thread.start(server.accept) do |client| # Wait for a client to connect
+        @thread_class.start(server.accept) do |client| # Wait for a client to connect
           handle_connection(client)
         end
       }
+    end
+
+    def open_tcp_server
+      # Socket to listen on interface/port
+      @tcp_server_class.open(minecraft_server.hostname, minecraft_server.port)
     end
 
     def handle_connection(client)

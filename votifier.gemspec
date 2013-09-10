@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   gem.license       = 'MIT'
   gem.require_paths = ["lib"]
   gem.required_ruby_version = '>= 1.9.1'
+  gem.add_development_dependency "rspec"
 
   gem.version       = Votifier::VERSION
   gem.date          = '2013-09-08'

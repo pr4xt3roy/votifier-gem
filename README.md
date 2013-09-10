@@ -38,8 +38,7 @@ The MinecraftServer can receive the hostname/port in different ways:
 For the server:
 
     require 'votifier'
-    server = Votifier::MinecraftServer.new(private_key_file, '0.0.0.0:8193')
-    Votifier::Server.new(server).listen
+    Votifier::Server.new(private_key_file, '0.0.0.0:8193').listen
 
 ## TODO
 
